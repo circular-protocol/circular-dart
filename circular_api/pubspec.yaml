@@ -1,0 +1,19 @@
+name: circular_api
+description: Dart package for interacting with the Circular API.
+version: 1.0.0
+repository: https://github.com/dannydenovi/CircularDartAPI
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  crypto: ^3.0.5
+  hex: ^0.2.0
+  http: ^1.2.2
+  intl: ^0.19.0
+  pointycastle: ^3.9.1
+  convert: ^3.1.1
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.24.0
