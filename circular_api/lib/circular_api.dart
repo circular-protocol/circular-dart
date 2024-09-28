@@ -1236,9 +1236,6 @@ class CircularApi {
       _throwError("Invalid signature");
     }
 
-    print("ID: $id");
-    print(signature);
-
     return await sendTransaction(id, from, to, _formattedTimestamp, type,
         hashedPayload, nonce, signature, blockchain);
   }
