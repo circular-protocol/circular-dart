@@ -36,7 +36,7 @@ class CircularApi {
   String _NAGKEY = '';
   String _NAGURL = 'https://nag.circularlabs.io/NAG.php?cep=';
   final String _version = '1.0.88';
-  final String _packageVersion = '0.0.1';
+  final String _packageVersion = '1.0.2';
 
   // SETTERS AND GETTERS
 
