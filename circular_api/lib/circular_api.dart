@@ -1164,18 +1164,19 @@ class CircularApi {
       String to,
       String timestamp,
       String type,
-      String payload,
+      Map<String, String> payload,
       int nonce,
       String signature,
       String blockchain) async {
     final url = Uri.parse('${_NAGURL}Circular_AddTransaction_');
+    final hashedPayload = _stringToHex(jsonEncode(payload));
 
     final data = {
       "ID": _hexFix(id),
       "From": _hexFix(from),
       "To": _hexFix(to),
       "Timestamp": timestamp,
-      "Payload": _hexFix(_stringToHex(payload)),
+      "Payload": _hexFix(hashedPayload),
       "Nonce": nonce.toString(),
       "Signature": _hexFix(signature),
       "Blockchain": _hexFix(blockchain),
