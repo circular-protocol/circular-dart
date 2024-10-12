@@ -46,7 +46,7 @@ void main() async {
 
 ## Docs
 
-Take a look at the [documentation](https://github.com/dannydenovi/CircularDartAPI) for the list of methods and expected results.
+Take a look at the [documentation](https://circular-protocol.gitbook.io/circular-sdk/api-docs/dart) for the list of methods and expected results.
 
 ## Test
 
