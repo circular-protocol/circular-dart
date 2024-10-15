@@ -6,7 +6,7 @@
 ///     CIRCULAR GLOBAL LEDGERS, INC. - USA                                     ///
 ///                                                                             ///
 ///                                                                             ///
-///     Version : 1.0.88                                                        ///
+///     Version : 1.0.8                                                         ///
 ///     Package : 1.0.2                                                         ///
 ///                                                                             ///
 ///     Creation: 16/09/2024                                                    ///
@@ -35,8 +35,8 @@ class CircularApi {
   // VARIABLES
   String _NAGKEY = '';
   String _NAGURL = 'https://nag.circularlabs.io/NAG.php?cep=';
-  final String _version = '1.0.88';
-  final String _packageVersion = '1.0.2';
+  final String _version = '1.0.8';
+  final String _packageVersion = '1.0.4';
 
   // SETTERS AND GETTERS
 
@@ -55,7 +55,7 @@ class CircularApi {
 
   // HELPER FUNCTIONS
 
-  String _hexFix(String hex) {
+  String hexFix(String hex) {
     return hex.startsWith("0x") ? hex.substring(2) : hex;
   }
 
@@ -69,7 +69,7 @@ class CircularApi {
     return data;
   }
 
-  String get _formattedTimestamp {
+  String get formattedTimestamp {
     final now = DateTime.now().toUtc();
     final formatter = DateFormat('yyyy:MM:dd-HH:mm:ss');
     return formatter.format(now);
@@ -89,7 +89,7 @@ class CircularApi {
   }
 
   String _hexToString(String input) {
-    final bytes = hex.decode(_hexFix(input));
+    final bytes = hex.decode(hexFix(input));
     return utf8.decode(bytes);
   }
 
@@ -132,7 +132,7 @@ class CircularApi {
       _throwError("Invalid private key length");
     }
 
-    String remove0x = _hexFix(privateKey);
+    String remove0x = hexFix(privateKey);
 
     // Hash the message to sign with SHA256
     Uint8List msgHash =
@@ -227,7 +227,7 @@ class CircularApi {
     }
 
     // Remove the 0x prefix from the public key
-    String remove0x = _hexFix(publicKey);
+    String remove0x = hexFix(publicKey);
 
     // Hash the message to verify with SHA256
     Uint8List msgHash = sha256.convert(utf8.encode(message)).bytes as Uint8List;
@@ -273,7 +273,7 @@ class CircularApi {
     }
 
     // Remove the 0x prefix from the private key
-    String remove0x = _hexFix(privateKey);
+    String remove0x = hexFix(privateKey);
 
     // Decode the private key from hex to bytes
     Uint8List key = Uint8List.fromList(hex.decode(remove0x));
@@ -304,8 +304,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_CheckWallet_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "Address": _hexFix(address),
+      "Blockchain": hexFix(blockchain),
+      "Address": hexFix(address),
       "Version": _version
     };
 
@@ -336,8 +336,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetWallet_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "Address": _hexFix(address),
+      "Blockchain": hexFix(blockchain),
+      "Address": hexFix(address),
       "Version": _version
     };
 
@@ -368,8 +368,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetLatestTransactions_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "Address": _hexFix(address),
+      "Blockchain": hexFix(blockchain),
+      "Address": hexFix(address),
       "Version": _version
     };
 
@@ -405,8 +405,8 @@ class CircularApi {
     }
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "Address": _hexFix(address),
+      "Blockchain": hexFix(blockchain),
+      "Address": hexFix(address),
       "Asset": asset,
       "Version": _version
     };
@@ -437,8 +437,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetWalletNonce_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "Address": _hexFix(address),
+      "Blockchain": hexFix(blockchain),
+      "Address": hexFix(address),
       "Version": _version
     };
 
@@ -471,9 +471,9 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_TestContract_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "From": _hexFix(from),
-      "Timestamp": _formattedTimestamp,
+      "Blockchain": hexFix(blockchain),
+      "From": hexFix(from),
+      "Timestamp": formattedTimestamp,
       "Project": _stringToHex(project),
       "Version": _version
     };
@@ -507,11 +507,11 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_CallContract_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "From": _hexFix(from),
-      "Address": _hexFix(project),
+      "Blockchain": hexFix(blockchain),
+      "From": hexFix(from),
+      "Address": hexFix(project),
       "Request": _stringToHex(request),
-      "Timestamp": _formattedTimestamp,
+      "Timestamp": formattedTimestamp,
       "Version": _version
     };
 
@@ -544,11 +544,11 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_CallContract_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "From": _hexFix(from),
-      "Address": _hexFix(project),
+      "Blockchain": hexFix(blockchain),
+      "From": hexFix(from),
+      "Address": hexFix(project),
       "Request": _stringToHex(request),
-      "Timestamp": _formattedTimestamp,
+      "Timestamp": formattedTimestamp,
       "Version": _version
     };
 
@@ -579,20 +579,20 @@ class CircularApi {
   /// **return** The response from the transaction <br>
 
   Future<dynamic> registerWallet(String blockchain, String publicKey) async {
-    final from = sha256.convert(utf8.encode(_hexFix(publicKey))).toString();
+    final from = sha256.convert(utf8.encode(hexFix(publicKey))).toString();
     final to = from;
     final nonce = 0;
     final type = "C_TYPE_REGISTERWALLET";
     final payloadObj = {
       "Action": "CP_REGISTERWALLET",
-      "PublicKey": _hexFix(publicKey),
+      "PublicKey": hexFix(publicKey),
     };
     final jsonStr = jsonEncode(payloadObj);
     final payload = _stringToHex(jsonStr);
-    final timestamp = _formattedTimestamp;
+    final timestamp = formattedTimestamp;
     final signature = "";
     final ID = sha256
-        .convert(utf8.encode(_hexFix(blockchain) +
+        .convert(utf8.encode(hexFix(blockchain) +
             from +
             to +
             payload +
@@ -617,7 +617,7 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_ResolveDomain_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
+      "Blockchain": hexFix(blockchain),
       "Domain": name,
       "Version": _version
     };
@@ -648,7 +648,7 @@ class CircularApi {
   Future<dynamic> getAssetList(String blockchain) async {
     final url = Uri.parse('${_NAGURL}Circular_GetAssetList_');
 
-    final data = {"Blockchain": _hexFix(blockchain), "Version": _version};
+    final data = {"Blockchain": hexFix(blockchain), "Version": _version};
 
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode(data);
@@ -682,7 +682,7 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetAsset_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
+      "Blockchain": hexFix(blockchain),
       "AssetName": name,
       "Version": _version
     };
@@ -713,7 +713,7 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetAssetSupply_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
+      "Blockchain": hexFix(blockchain),
       "AssetName": name,
       "Version": _version
     };
@@ -746,7 +746,7 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetVoucher_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
+      "Blockchain": hexFix(blockchain),
       "AssetName": code.toString(),
       "Version": _version
     };
@@ -781,7 +781,7 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetBlockRange_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
+      "Blockchain": hexFix(blockchain),
       "Start": start.toString(),
       "End": end.toString(),
       "Version": _version
@@ -813,7 +813,7 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetBlock_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
+      "Blockchain": hexFix(blockchain),
       "BlockNumber": blockNumber.toString(),
       "Version": _version
     };
@@ -842,7 +842,7 @@ class CircularApi {
   Future<dynamic> getBlockCount(String blockchain) async {
     final url = Uri.parse('${_NAGURL}Circular_GetBlockHeight_');
 
-    final data = {"Blockchain": _hexFix(blockchain), "Version": _version};
+    final data = {"Blockchain": hexFix(blockchain), "Version": _version};
 
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode(data);
@@ -870,7 +870,7 @@ class CircularApi {
   Future<dynamic> getAnalytics(String blockchain) async {
     final url = Uri.parse('${_NAGURL}Circular_GetAnalytics_');
 
-    final data = {"Blockchain": _hexFix(blockchain), "Version": _version};
+    final data = {"Blockchain": hexFix(blockchain), "Version": _version};
 
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode(data);
@@ -924,8 +924,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetPendingTransaction_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "ID": _hexFix(TxID),
+      "Blockchain": hexFix(blockchain),
+      "ID": hexFix(TxID),
       "Version": _version
     };
 
@@ -959,8 +959,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetTransactionbyID_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "ID": _hexFix(TxID),
+      "Blockchain": hexFix(blockchain),
+      "ID": hexFix(TxID),
       "Start": start.toString(),
       "End": end.toString(),
       "Version": _version
@@ -995,8 +995,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetTransactionbyNode_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "NodeID": _hexFix(nodeID),
+      "Blockchain": hexFix(blockchain),
+      "NodeID": hexFix(nodeID),
       "Start": start.toString(),
       "End": end.toString(),
       "Version": _version
@@ -1031,8 +1031,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetTransactionbyAddress_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "Address": _hexFix(address),
+      "Blockchain": hexFix(blockchain),
+      "Address": hexFix(address),
       "Start": start.toString(),
       "End": end.toString(),
       "Version": _version
@@ -1067,8 +1067,8 @@ class CircularApi {
     final url = Uri.parse('${_NAGURL}Circular_GetTransactionbyDate_');
 
     final data = {
-      "Blockchain": _hexFix(blockchain),
-      "Address": _hexFix(address),
+      "Blockchain": hexFix(blockchain),
+      "Address": hexFix(address),
       "StartDate": startDate,
       "EndDate": endDate,
       "Version": _version
@@ -1115,15 +1115,17 @@ class CircularApi {
       String blockchain) async {
     final url = Uri.parse('${_NAGURL}Circular_AddTransaction_');
 
+    final hashedPayload = _stringToHex(jsonEncode(payload));
+
     final data = {
-      "ID": _hexFix(id),
-      "From": _hexFix(from),
-      "To": _hexFix(to),
+      "ID": hexFix(id),
+      "From": hexFix(from),
+      "To": hexFix(to),
       "Timestamp": timestamp,
-      "Payload": _hexFix(payload),
+      "Payload": hexFix(hashedPayload),
       "Nonce": nonce.toString(),
-      "Signature": _hexFix(signature),
-      "Blockchain": _hexFix(blockchain),
+      "Signature": hexFix(signature),
+      "Blockchain": hexFix(blockchain),
       "Type": type,
       "Version": _version
     };
@@ -1142,102 +1144,5 @@ class CircularApi {
     }
 
     return jsonDecode(response.body);
-  }
-
-  /// # sendTransactionWithPlainPayload()
-  /// ## Send a transaction to a blockchain with a plain json string payload <br>
-  /// **id** The ID of the transaction <br>
-  /// **from** The address of the sender <br>
-  /// **to** The address of the receiver <br>
-  /// **timestamp** The timestamp of the transaction <br>
-  /// **type** The type of the transaction <br>
-  /// **payload** The payload of the transaction in plain json string format <br>
-  /// **nonce** The nonce of the transaction <br>
-  /// **signature** The signature of the transaction in hex format <br>
-  /// **blockchain** The blockchain to send the transaction to <br>
-  /// **return** The response from the API
-  ///
-
-  Future<dynamic> sendTransactionWithPlainPayload(
-      String id,
-      String from,
-      String to,
-      String timestamp,
-      String type,
-      Map<String, String> payload,
-      int nonce,
-      String signature,
-      String blockchain) async {
-    final url = Uri.parse('${_NAGURL}Circular_AddTransaction_');
-    final hashedPayload = _stringToHex(jsonEncode(payload));
-
-    final data = {
-      "ID": _hexFix(id),
-      "From": _hexFix(from),
-      "To": _hexFix(to),
-      "Timestamp": timestamp,
-      "Payload": _hexFix(hashedPayload),
-      "Nonce": nonce.toString(),
-      "Signature": _hexFix(signature),
-      "Blockchain": _hexFix(blockchain),
-      "Type": type,
-      "Version": _version
-    };
-
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode(data);
-
-    final response = await http.post(url, headers: headers, body: body);
-
-    if (response.statusCode != 200) {
-      try {
-        return jsonDecode(response.body);
-      } catch (e) {
-        return {'error': 'Network response was not ok'};
-      }
-    }
-
-    return jsonDecode(response.body);
-  }
-
-  /** # sendTransactionWithPK()
-   * ## Send a transaction to a blockchain with a private key in an easy way
-   * **from** The address of the sender <br>
-   * **privateKey** The private key of the sender <br>
-   * **to** The address of the receiver <br>
-   * **type** The type of the transaction <br>
-   * **payload** The payload of the transaction in plain json string format <br>
-   * **blockchain** The blockchain to send the transaction to <br>
-   * **return** The response from the API
-   */
-
-  Future<dynamic> sendTransactionWithPK(
-      String from,
-      String privateKey,
-      String to,
-      String type,
-      Map<String, String> payload,
-      String blockchain) async {
-    final walletNonceResponse = await getWalletNonce(blockchain, from);
-    final timestamp = _formattedTimestamp;
-    final hashedPayload = _stringToHex(jsonEncode(payload));
-    final nonce = walletNonceResponse["Response"]["Nonce"] + 1;
-
-    blockchain = _hexFix(blockchain);
-    from = _hexFix(from);
-    to = _hexFix(to);
-
-    final id = sha256
-        .convert(utf8.encode(
-            '${_hexFix(blockchain)}$from$to$hashedPayload$nonce$timestamp'))
-        .toString();
-    final signature = signMessage(id, privateKey);
-
-    if (!verifySignature(getPublicKey(privateKey), id, signature)) {
-      _throwError("Invalid signature");
-    }
-
-    return await sendTransaction(id, from, to, _formattedTimestamp, type,
-        hashedPayload, nonce, signature, blockchain);
   }
 }
